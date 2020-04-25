@@ -1,0 +1,150 @@
+<template>
+  <div class="container is-fluid">
+    <div class="columns is-tablet">
+      <div class="column">
+        <b-field label="Name">
+          <b-input v-model="name"></b-input>
+        </b-field>
+      </div>
+      <div class="column">
+        <b-field label="Email">
+          <b-input type="email" maxlength="30" v-model="email"> </b-input>
+        </b-field>
+      </div>
+    </div>
+    <div class="columns is-tablet">
+      <div class="column">
+        <b-field label="Username">
+          <b-input type="text" maxlength="30" v-model="username"></b-input>
+        </b-field>
+      </div>
+      <div class="column">
+        <b-field label="Password">
+          <b-input type="password" v-model="password" password-reveal>
+          </b-input>
+        </b-field>
+      </div>
+    </div>
+    <div class="columns is-tablet">
+      <div class="column">
+        <b-field label="Infection">
+          <b-select
+            placeholder="Select an infection"
+            rounded
+            required
+            v-model="infection"
+          >
+            <option value="COVID-19">Coronavirus (COVID-19)</option>
+            <option value="Dementia">Dementia</option>
+            <option value="Azheimer's">Azheimer's</option>
+          </b-select>
+        </b-field>
+      </div>
+      <div class="column">
+        <b-field label="Infected On">
+          <b-datepicker
+            placeholder="Select a date..."
+            icon="calendar-today"
+            required
+            v-model="infected_on"
+          >
+          </b-datepicker>
+        </b-field>
+      </div>
+    </div>
+    <div class="columns is-tablet">
+      <div class="column">
+        <b-field label="Status">
+          <b-select
+            placeholder="How far along are you?"
+            rounded
+            required
+            v-model="status"
+          >
+            <option value="0">Asymptomatic</option>
+            <option value="1">Infected</option>
+            <option value="2">Recovering</option>
+            <option value="3">Recovered</option>
+          </b-select>
+        </b-field>
+      </div>
+      <div class="column">
+        <b-field label="Feel">
+          <b-select
+            placeholder="How do you feel right now?"
+            rounded
+            required
+            v-model="feel"
+          >
+            <option value="happy">😄</option>
+            <option value="sad">🙁</option>
+            <option value="excited">😲</option>
+            <option value="surprised">😌</option>
+            <option value="relieved">🤩</option>
+          </b-select>
+        </b-field>
+      </div>
+      <div class="column">
+        <b-field class="file">
+          <b-upload v-model="file">
+            <a class="button is-primary">
+              <b-icon icon="upload"></b-icon>
+              <span>Upload Profile Photo</span>
+            </a>
+          </b-upload>
+          <span class="file-name" v-if="file">
+            {{ file.name }}
+          </span>
+        </b-field>
+      </div>
+    </div>
+    <b-field label="Medications">
+      <textarea
+        class="textarea"
+        placeholder="Share what medicines made you better...."
+        rows="2"
+      ></textarea>
+    </b-field>
+    <b-field label="Treatments">
+      <textarea
+        class="textarea"
+        placeholder="Let the world know what steps you took... "
+        rows="2"
+      ></textarea>
+    </b-field>
+    <b-field label="Testimonial">
+      <textarea
+        class="textarea"
+        placeholder="Share your experiences..."
+        rows="2"
+      ></textarea>
+    </b-field>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      name: "",
+      email: "",
+      password: "",
+      username: "",
+      infection: "",
+      infected_on: [],
+      status: "",
+      feel: "",
+      meds: "",
+      treatments: "",
+      exp: "",
+      file: ""
+    };
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+div {
+  text-align: left !important;
+}
+</style>

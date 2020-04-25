@@ -4,8 +4,21 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {},
+  state: {
+    user: "",
+    feels: {
+      happy: "😄",
+      sad: "🙁",
+      surprised: "😲",
+      releived: "😌",
+      excited: "🤩"
+    }
+  },
   mutations: {},
   actions: {},
-  modules: {}
+  getters: {
+    getFeel(state) {
+      return state.feels;
+    }
+  }
 });
