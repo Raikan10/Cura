@@ -98,18 +98,20 @@
         </b-field>
       </div>
     </div>
+    <div class="columns is-tablet">
+      <div class="column">
     <b-field label="Medications">
       <textarea
         class="textarea"
         placeholder="Share what medicines made you better...."
-        rows="2"
+        rows="1"
       ></textarea>
     </b-field>
     <b-field label="Treatments">
       <textarea
         class="textarea"
         placeholder="Let the world know what steps you took... "
-        rows="2"
+        rows="1"
       ></textarea>
     </b-field>
     <b-field label="Testimonial">
@@ -119,10 +121,16 @@
         rows="2"
       ></textarea>
     </b-field>
+    <b-button type="is-primary" @click.prevent="signUp">Submit</b-button>
+      </div>
+    </div>
+    
   </div>
 </template>
 
 <script>
+import firebase from "firebase";
+
 export default {
   data() {
     return {
@@ -137,8 +145,34 @@ export default {
       meds: "",
       treatments: "",
       exp: "",
-      file: ""
+      file: []
     };
+  },
+  methods: {
+    signUp: function() {
+      var isError = false
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(this.email, this.password)
+        .catch(function(error) {
+          // Handle Errors here.
+          isError = true
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          // [START_EXCLUDE]
+          if (errorCode == "auth/weak-password") {
+            alert("The password is too weak.");
+          } else {
+            alert(errorMessage);
+          }
+          console.log(error);
+          // [END_EXCLUDE]
+        });
+      if(!isError)alert("Signed Up");
+
+      //Handle Database now
+      this.$router.push({ path: "/feed" });
+    }
   }
 };
 </script>
@@ -146,5 +180,6 @@ export default {
 <style lang="scss" scoped>
 div {
   text-align: left !important;
+  margin-left: 10px;
 }
 </style>

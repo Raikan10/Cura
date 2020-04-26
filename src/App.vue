@@ -10,7 +10,7 @@
         <b-navbar-item tag="router-link" :to="{ path: '/feed' }">
           Feed
         </b-navbar-item>
-        <b-navbar-item href="#">
+        <b-navbar-item tag="router-link" :to="{ path: '/cure' }">
           Cures
         </b-navbar-item>
         <b-navbar-item href="#">
