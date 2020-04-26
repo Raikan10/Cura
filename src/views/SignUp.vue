@@ -3,19 +3,19 @@
     <div class="columns is-tablet">
       <div class="column">
         <b-field label="Name">
-          <b-input v-model="name"></b-input>
+          <b-input v-model="user.name"></b-input>
         </b-field>
       </div>
       <div class="column">
         <b-field label="Email">
-          <b-input type="email" maxlength="30" v-model="email"> </b-input>
+          <b-input type="email" maxlength="30" v-model="user.email"> </b-input>
         </b-field>
       </div>
     </div>
     <div class="columns is-tablet">
       <div class="column">
         <b-field label="Username">
-          <b-input type="text" maxlength="30" v-model="username"></b-input>
+          <b-input type="text" maxlength="30" v-model="user.username"></b-input>
         </b-field>
       </div>
       <div class="column">
@@ -32,7 +32,7 @@
             placeholder="Select an infection"
             rounded
             required
-            v-model="infection"
+            v-model="user.infection"
           >
             <option value="COVID-19">Coronavirus (COVID-19)</option>
             <option value="Dementia">Dementia</option>
@@ -46,7 +46,7 @@
             placeholder="Select a date..."
             icon="calendar-today"
             required
-            v-model="infected_on"
+            v-model="user.infected_on"
           >
           </b-datepicker>
         </b-field>
@@ -59,7 +59,7 @@
             placeholder="How far along are you?"
             rounded
             required
-            v-model="status"
+            v-model="user.status"
           >
             <option value="0">Asymptomatic</option>
             <option value="1">Infected</option>
@@ -74,7 +74,7 @@
             placeholder="How do you feel right now?"
             rounded
             required
-            v-model="feel"
+            v-model="user.feel"
           >
             <option value="happy">😄</option>
             <option value="sad">🙁</option>
@@ -105,6 +105,7 @@
         class="textarea"
         placeholder="Share what medicines made you better...."
         rows="1"
+        v-model="user.meds"
       ></textarea>
     </b-field>
     <b-field label="Treatments">
@@ -112,6 +113,7 @@
         class="textarea"
         placeholder="Let the world know what steps you took... "
         rows="1"
+        v-model="user.treats"
       ></textarea>
     </b-field>
     <b-field label="Testimonial">
@@ -119,43 +121,55 @@
         class="textarea"
         placeholder="Share your experiences..."
         rows="2"
+        v-model="user.exp"
       ></textarea>
     </b-field>
-    <b-button type="is-primary" @click.prevent="signUp">Submit</b-button>
       </div>
+    </div>
+    <div class="columns is-tablet">
+      <div class="column">
+        <b-button type="is-primary" @click.prevent="signUp">Submit</b-button>
+      </div>
+    <div class="column">
+      <p style="color:red">{{errors}}</p>
+    </div>
     </div>
     
   </div>
 </template>
 
 <script>
-import firebase from "firebase";
 
 export default {
   data() {
     return {
-      name: "",
-      email: "",
+      user: {
+        name: "",
+        email: "",
+        username: "",
+        infection: "",
+        infected_on: [],
+        status: "",
+        feel: "",
+        meds: "",
+        treats: "",
+        exp: "",
+        update:"Just joined"
+      },
+      file: [],
       password: "",
-      username: "",
-      infection: "",
-      infected_on: [],
-      status: "",
-      feel: "",
-      meds: "",
-      treatments: "",
-      exp: "",
-      file: []
+      errors:"",
     };
   },
   methods: {
     signUp: function() {
       var isError = false
-      firebase
+      this.$firebase
         .auth()
-        .createUserWithEmailAndPassword(this.email, this.password)
+        .createUserWithEmailAndPassword(this.user.email, this.password)
         .catch(function(error) {
           // Handle Errors here.
+          console.log("entered")
           isError = true
           var errorCode = error.code;
           var errorMessage = error.message;
@@ -165,12 +179,33 @@ export default {
           } else {
             alert(errorMessage);
           }
+          this.errors = errorMessage;
           console.log(error);
           // [END_EXCLUDE]
         });
       if(!isError)alert("Signed Up");
 
       //Handle Database now
+      var db = this.$firebase.firestore();
+      db.collection("users").add(this.user)
+            .then(function(docRef) {
+                console.log("Document written with ID: ", docRef.id);
+            })
+            .catch(function(error) {
+                console.error("Error adding document: ", error);
+            });
+      this.user.name= "";
+      this.user.email= "";
+      this.password= "";
+      this.user.username= "";
+      this.user.infection= "";
+      this.user.infected_on= [];
+      this.user.status= "";
+      this.user.feel= "";
+      this.user.meds= "";
+      this.user.treatments= "";
+      this.user.exp= "";
+      this.file= [];
       this.$router.push({ path: "/feed" });
     }
   }

@@ -12,6 +12,24 @@ export default {
   name: "Feed",
   components: {
     FeedCard
+  },
+  data() {
+    return {
+      feedUsers:[]
+    }
+  },
+  mounted: function() {
+    var db = this.$firebase.firestore();
+    db.collection("users")
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        console.log(`${doc.username} => ${doc.data()}`);
+        this.feedUsers.push(doc.username);
+    });
+});
+
+
   }
 };
 </script>

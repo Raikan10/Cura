@@ -30,7 +30,8 @@
         <button class="button" type="button" @click="$parent.close()">
           Close
         </button>
-        <button class="button is-primary">Login</button>
+        <button class="button is-primary" @click.prevent="login">Login</button>
+        <p class="subtitle">You don't have an account ? You can <router-link to="/signup">create one</router-link></p>
       </footer>
     </div>
   </form>
@@ -42,6 +43,20 @@ export default {
   props: {
     email: String,
     password: String
+  },
+  methods: {
+    login : function() {
+      this.$firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
+          (user) => {
+            if (user){
+              this.$router.replace('Home')
+            }
+          },
+          (err) => {
+            alert('Oops. ' + err.message)
+          }
+        );
+    }
   }
 };
 </script>
