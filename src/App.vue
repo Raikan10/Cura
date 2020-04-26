@@ -23,7 +23,7 @@
           <b-icon icon="account"></b-icon>
         </b-navbar-item>
         <b-navbar-item tag="div">
-          <div class="buttons">
+          <div class="buttons" v-if="!this.$firebase.auth().currentUser">
             <a class="button is-primary" @click.prevent="toSignUp">
               <strong>Sign up</strong>
             </a>
@@ -39,9 +39,14 @@
                 aria-role="dialog"
                 aria-modal
               >
-                <Login v-bind="formProps"></Login>
+                <Login></Login>
               </b-modal>
             </section>
+          </div>
+          <div class="buttons" v-if="this.$firebase.auth().currentUser">
+          <a class="button is-light" @click="logOut">
+                Log Out
+              </a>
           </div>
         </b-navbar-item>
       </template>
@@ -59,16 +64,24 @@ export default {
   },
   data() {
     return {
-      isComponentModalActive: false,
-      formProps: {
-        email: "",
-        password: ""
-      }
+      isComponentModalActive: false
     };
+  },
+  computed: {
+    isLogin:function(){
+      var currentUser = this.$firebase.auth().currentUser;
+      if(currentUser)return true;
+      return false;
+    }
   },
   methods: {
     toSignUp: function() {
-      this.$router.push({ path: "/signup" });
+      this.$router.replace({ path: "/signup" });
+    },
+    logOut: function() {
+      this.$firebase.auth().signOut().then(() => {
+        this.$router.go('/')
+      })
     }
   }
 };

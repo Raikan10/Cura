@@ -16,19 +16,8 @@ Vue.config.productionTip = false;
 Vue.config.ignoredElements = [/^ion-/];
 
 //Config Comes here
-const FBCONFIG = {
-  apiKey: "AIzaSyArzQjmxUUZjd56ry9L0MBu3Ze3feAGmg8",
-  authDomain: "cura-fa109.firebaseapp.com",
-  databaseURL: "https://cura-fa109.firebaseio.com",
-  projectId: "cura-fa109",
-  storageBucket: "cura-fa109.appspot.com",
-  messagingSenderId: "348628641539",
-  appId: "1:348628641539:web:83f741ed20f05dead8ab36",
-  measurementId: "G-6F3T42XX8Z"
-};
 
 Vue.use(VueFirebase, {firebase: firebase, config: FBCONFIG});
-
 
 new Vue({
   router,

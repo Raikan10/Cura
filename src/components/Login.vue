@@ -8,7 +8,7 @@
         <b-field label="Email">
           <b-input
             type="email"
-            :value="email"
+            v-model="email"
             placeholder="Your email"
             required
           >
@@ -18,7 +18,7 @@
         <b-field label="Password">
           <b-input
             type="password"
-            :value="password"
+            v-model="password"
             password-reveal
             placeholder="Your password"
             required
@@ -40,16 +40,18 @@
 <script>
 export default {
   name: "Login",
-  props: {
-    email: String,
-    password: String
+  data(){
+    return{
+      email:"",
+      password:""
+    }
   },
   methods: {
     login : function() {
       this.$firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(
           (user) => {
             if (user){
-              this.$router.replace('Home')
+              console.log(user);
             }
           },
           (err) => {

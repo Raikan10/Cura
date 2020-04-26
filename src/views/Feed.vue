@@ -1,7 +1,9 @@
 <template>
   <div class="container">
     <h1 class="title is-primary" style="margin-top:20px">Feed</h1>
-    <FeedCard userName="Raikan10"></FeedCard>
+    <div v-for="feed in feedUsers" :key="feed.email">
+      <FeedCard :data="feed" style="margin-top:3em"></FeedCard>
+    </div>
   </div>
 </template>
 
@@ -18,14 +20,14 @@ export default {
       feedUsers:[]
     }
   },
-  mounted: function() {
+  beforeMount: function() {
     var db = this.$firebase.firestore();
     db.collection("users")
     .get()
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        console.log(`${doc.username} => ${doc.data()}`);
-        this.feedUsers.push(doc.username);
+        // console.log(`${doc.id} => ${doc.data()}`);
+        this.feedUsers.unshift(doc.data());
     });
 });
 

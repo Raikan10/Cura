@@ -206,7 +206,7 @@ export default {
       this.user.treatments= "";
       this.user.exp= "";
       this.file= [];
-      this.$router.push({ path: "/feed" });
+      this.$router.go({ path: "/feed" });
     }
   }
 };

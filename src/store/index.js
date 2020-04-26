@@ -10,15 +10,21 @@ export default new Vuex.Store({
       happy: "😄",
       sad: "🙁",
       surprised: "😲",
-      releived: "😌",
+      relieved: "😌",
       excited: "🤩"
-    }
+    },
+    status: [
+      "Asymptomatic","Infected","Recovering","Recovered"
+    ]
   },
   mutations: {},
   actions: {},
   getters: {
     getFeel(state) {
       return state.feels;
+    },
+    getStatus(state) {
+      return state.status;
     }
   }
 });

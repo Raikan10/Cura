@@ -3,7 +3,7 @@
     <div class="columns is-mobile">
       <div class="column">
         <img :src="img" alt="Profile photo" /><br />
-        <p>{{ userName }}</p>
+        <p>{{ data.username }}</p>
       </div>
       <div class="column">
         <p class="title is-6">Day</p>
@@ -17,16 +17,16 @@
     <div class="columns is-mobile">
       <div class="column">
         <div class="column">
-          <p><span class="title is-6">Update: </span>{{ update }}</p>
+          <p><span class="title is-6">Update: </span>{{ data.update }}</p>
         </div>
       </div>
       <div class="column">
         <p class="title is-6">Feeling</p>
-        <p class="icon">{{ feel }}</p>
+        <p class="icon">{{ feels }}</p>
       </div>
       <div class="column">
         <p class="title is-6">Infection</p>
-        <p>{{ infection }}</p>
+        <p>{{ data.infection }}</p>
       </div>
     </div>
     <hr />
@@ -64,32 +64,41 @@
 export default {
   name: "FeedCard",
   props: {
-    userName: String
+    data: Object
   },
   data() {
     return {
-      img: "https://bulma.io/images/placeholders/64x64.png",
-      status: "Recovered",
-      day: 25,
-      infection: "COVID-19",
-      feels: "happy",
-      update: "Finally recovered",
+      img: "https://picsum.photos/64",
       comment: "",
       comments: []
     };
   },
   computed: {
-    feel: function() {
-      return this.$store.getters.getFeel[this.feels];
+    day: function() {
+      var today = new Date()
+      console.log(today)
+      console.log(this.data.infected_on)
+      var Difference_In_Time = today.getTime()/1000 - this.data.infected_on.seconds; 
+      return parseInt(Difference_In_Time / (3600 * 24));  
+
+    },
+    status: function(){
+      return this.$store.getters.getStatus[0]
+    },
+    feels: function(){
+      return this.$store.getters.getFeel[this.data.feel]
+    },
+    user: function(){
+      return "You";
     }
   },
   methods: {
     addComment: function() {
-      var x = "Username: " + this.comment;
+      var x = this.user+": " + this.comment;
       this.comments.push(x);
       this.comment = "";
     }
-  }
+  },
 };
 </script>
 
